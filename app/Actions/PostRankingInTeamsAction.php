@@ -22,7 +22,7 @@ class PostRankingInTeamsAction implements Action
     private function getMessageText(): string
     {
         $text = '';
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $ranking = $this->data->rankings[$i];
 
             $text .= __('teams.message', [
