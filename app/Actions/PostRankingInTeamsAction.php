@@ -13,6 +13,7 @@ class PostRankingInTeamsAction implements Action
     public function handle(): void
     {
         (new PostMessageInTeamsAction(
+            webhookUrl: config('teams.incoming_webhook_url'),
             title: __('teams.title'),
             text: $this->getMessageText(),
         ))->handle();

@@ -8,6 +8,7 @@ use Sebbmyr\Teams\TeamsConnector;
 class PostMessageInTeamsAction implements Action
 {
     public function __construct(
+        private readonly string $webhookUrl,
         private readonly string $title,
         private readonly string $text,
     ) {
@@ -15,7 +16,7 @@ class PostMessageInTeamsAction implements Action
 
     public function handle(): void
     {
-        $connector = new TeamsConnector(config('teams.incoming_webhook_url'));
+        $connector = new TeamsConnector($this->webhookUrl);
 
         $card  = new SimpleCard([
             'title' => $this->title,
