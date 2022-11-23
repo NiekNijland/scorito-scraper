@@ -5,23 +5,24 @@ namespace App\Jobs;
 use App\Actions\CheckDataIsEqualAction;
 use App\Actions\GetCurrentDataAction;
 use App\Actions\GetScoritoRankingAction;
+use App\Actions\PostExceptionInTeamsAction;
 use App\Actions\PostRankingInTeamsAction;
 use App\Actions\SaveDataAction;
 use App\Exceptions\ScoritoApiException;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Throwable;
 
 class CheckScoritoRankingJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(
-        private readonly string $webhookUrl,
-        private readonly string $gameId,
-    ) {
+    public function __construct(private readonly string $gameId)
+    {
     }
 
     /**
@@ -33,17 +34,16 @@ class CheckScoritoRankingJob implements ShouldQueue
         $data = (new GetScoritoRankingAction($this->gameId))->handle();
 
         if (is_null($oldData) || !(new CheckDataIsEqualAction($oldData, $data))->handle()) {
-            (new PostRankingInTeamsAction(
-                $this->webhookUrl,
-                $data,
-            ))->handle();
+            (new PostRankingInTeamsAction($data))->handle();
         }
 
         (new SaveDataAction($data))->handle();
     }
 
-    public function failed(): void
+    public function failed(Throwable $exception): void
     {
-
+        if ($exception instanceof Exception) {
+            (new PostExceptionInTeamsAction($exception))->handle();
+        }
     }
 }

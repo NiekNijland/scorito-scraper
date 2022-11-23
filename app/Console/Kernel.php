@@ -15,7 +15,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->job(new CheckScoritoRankingJob(
-            config('teams.incoming_webhook_url'),
             config('scorito.game_id')
         ))->everyFifteenMinutes();
     }
