@@ -13,7 +13,8 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "sebbmeyer/php-microsoft-teams-connector": "^0.2.2",
-        "spatie/laravel-data": "^2.0"
+        "spatie/laravel-data": "^2.0",
+        "stechstudio/laravel-php-cs-fixer": "^3.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -22,6 +23,7 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "nunomaduro/larastan": "^2.0",
+        "nunomaduro/phpinsights": "^2.6",
         "phpunit/phpunit": "^9.5.10",
         "roave/security-advisories": "dev-latest",
         "spatie/laravel-ignition": "^1.0"
@@ -63,7 +65,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "minimum-stability": "dev",

@@ -17,7 +17,12 @@ class CheckDataIsEqualAction implements Action
     {
         $i = 0;
         foreach ($this->data1->rankings as $ranking1) {
-            if (!$this->rankingsAreEqual($ranking1, $this->data2->rankings[$i])) {
+            $rankingsAreEqual = $this->rankingsAreEqual(
+                $ranking1,
+                $this->data2->rankings[$i]
+            );
+
+            if (! $rankingsAreEqual) {
                 return false;
             }
 

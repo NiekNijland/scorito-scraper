@@ -14,7 +14,7 @@ class GetCurrentDataAction implements Action
 
     public function handle(): ?ScoritoData
     {
-        if (!Storage::exists($this->getFileName())) {
+        if (! Storage::exists($this->getFileName())) {
             return null;
         }
 

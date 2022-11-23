@@ -29,7 +29,7 @@ class PostRankingInTeamsAction implements Action
                 'place' => $i + 1,
                 'name' => $ranking->name,
                 'points' => $ranking->score,
-            ]) . "<br>";
+            ]) . '<br>';
         }
 
         $text .= '<br><b><a href="https://github.com/NiekNijland/scorito-scraper">View sourcecode</a></b>';

@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Actions\CheckDataIsEqualAction;
 use App\Actions\GetCurrentDataAction;
-use App\Actions\GetScoritoRankingAction;
+use App\Actions\GetScoritoDataAction;
 use App\Actions\PostExceptionInTeamsAction;
 use App\Actions\PostRankingInTeamsAction;
 use App\Actions\SaveDataAction;
@@ -19,7 +19,10 @@ use Throwable;
 
 class CheckScoritoRankingJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(private readonly string $gameId)
     {
@@ -31,9 +34,9 @@ class CheckScoritoRankingJob implements ShouldQueue
     public function handle(): void
     {
         $oldData = (new GetCurrentDataAction($this->gameId))->handle();
-        $data = (new GetScoritoRankingAction($this->gameId))->handle();
+        $data = (new GetScoritoDataAction($this->gameId))->handle();
 
-        if (is_null($oldData) || !(new CheckDataIsEqualAction($oldData, $data))->handle()) {
+        if (is_null($oldData) || ! (new CheckDataIsEqualAction($oldData, $data))->handle()) {
             (new PostRankingInTeamsAction($data))->handle();
         }
 

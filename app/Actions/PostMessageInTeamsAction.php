@@ -18,7 +18,7 @@ class PostMessageInTeamsAction implements Action
     {
         $connector = new TeamsConnector($this->webhookUrl);
 
-        $card  = new SimpleCard([
+        $card = new SimpleCard([
             'title' => $this->title,
             'text' => $this->text,
         ]);

@@ -9,13 +9,12 @@ use Spatie\LaravelData\DataCollection;
 class ScoritoData extends Data
 {
     public function __construct(
-        public string         $id,
-        public string         $name,
-        public string         $description,
+        public string $id,
+        public string $name,
+        public string $description,
         #[DataCollectionOf(RankingData::class)]
         public DataCollection $rankings,
-    )
-    {
+    ) {
     }
 
     public function toString(): string
@@ -35,7 +34,7 @@ class ScoritoData extends Data
         $rawRankings = explode('|', $string);
 
         foreach ($rawRankings as $ranking) {
-            $values = explode(',' , $ranking);
+            $values = explode(',', $ranking);
             $rankingItems[] = new RankingData(
                 name: $values[0],
                 score: $values[1],
