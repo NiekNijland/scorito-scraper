@@ -2,8 +2,11 @@
 
 namespace App\Jobs;
 
+use App\Actions\CheckDataIsEqualAction;
+use App\Actions\GetCurrentDataAction;
 use App\Actions\GetScoritoRankingAction;
 use App\Actions\PostRankingInTeamsAction;
+use App\Actions\SaveDataAction;
 use App\Exceptions\ScoritoApiException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,12 +29,17 @@ class CheckScoritoRankingJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $rankings = (new GetScoritoRankingAction($this->gameId))->handle();
+        $oldData = (new GetCurrentDataAction($this->gameId))->handle();
+        $data = (new GetScoritoRankingAction($this->gameId))->handle();
 
-        (new PostRankingInTeamsAction(
-            $this->webhookUrl,
-            $rankings,
-        ))->handle();
+        if (is_null($oldData) || !(new CheckDataIsEqualAction($oldData, $data))->handle()) {
+            (new PostRankingInTeamsAction(
+                $this->webhookUrl,
+                $data,
+            ))->handle();
+        }
+
+        (new SaveDataAction($data))->handle();
     }
 
     public function failed(): void

@@ -22,12 +22,27 @@ class PostRankingInTeamsAction implements Action
 
         $card  = new SimpleCard([
             'title' => __('teams.title'),
-            'text' => __('teams.message', [
-                'name' => $rankedFirst->name,
-                'points' => $rankedFirst->score,
-            ]),
+            'text' => $this->getMessageText(),
         ]);
 
         $connector->send($card);
+    }
+
+    private function getMessageText(): string
+    {
+        $text = '';
+        for ($i = 0; $i < 5; $i++) {
+            $ranking = $this->data->rankings[$i];
+
+            $text .= __('teams.message', [
+                'place' => $i + 1,
+                'name' => $ranking->name,
+                'points' => $ranking->score,
+            ]) . "<br>";
+        }
+
+        $text .= '<br><b><a href="https://github.com/NiekNijland/scorito-scraper">View sourcecode</a></b>';
+
+        return $text;
     }
 }
