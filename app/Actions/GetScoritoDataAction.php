@@ -70,7 +70,7 @@ class GetScoritoDataAction implements Action
         foreach ($response['Content']['RankingItems'] as $rawRanking) {
             $rankingDataItems[] = new RankingData(
                 name: $rawRanking['UserName'],
-                score: $rawRanking['RoundPoints'],
+                score: $rawRanking['TotalPoints'],
             );
         }
 
